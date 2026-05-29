@@ -1,33 +1,29 @@
-import { useState, useEffect } from 'react'
+import {useState, useEffect} from 'react'
 
-export default function NoteModal({ onClose, onSave, selectedNote }) {
+export default function NoteModal({ note, onSave, onClose }) {
     const [title, setTitle] = useState('')
     const [content, setContent] = useState('')
+
     useEffect(() => {
-        if (selectedNote) {
-            setTitle(selectedNote.title)
-            setContent(selectedNote.content)
+        if (note) {
+            setTitle(note.title)
+            setContent(note.content)
         }
-    }, [selectedNote])
+    }, [note])
 
     const handleSave = () => {
-        if (!title || !content) return
         onSave({
-            id: selectedNote?.id || Date.now(),
+            id: note?.id || Date.now(),
             title,
             content,
         })
-        setTitle('')
-        setContent('')
     }
 
     return (
         <div className='fixed inset-0 bg-black/70 flex items-center justify-center z-50'>
-            <div className='bg-zinc-900 border border-zinc-800 rounded-3xl p-8 w-[90%] max-w-2xl'>
+            <div className='bg-zinc-900 border border-white/10 rounded-3xl p-8 w-[90%] max-w-2xl'>
                 <h2 className='text-3xl font-bold mb-6'>
-                    {selectedNote
-                        ? 'Edit Note'
-                        : 'New Note'}
+                    {note ? 'Edit Note' : 'Create Note'}
                 </h2>
 
                 <input
@@ -35,30 +31,29 @@ export default function NoteModal({ onClose, onSave, selectedNote }) {
                     placeholder='Title'
                     value={title}
                     onChange={e => setTitle(e.target.value)}
-                    className='w-full bg-zinc-800 rounded-xl p-4 mb-4 outline-none'
+                    className='w-full bg-zinc-800 p-4 rounded-xl mb-4 outline-none'
                 />
 
                 <textarea
-                    placeholder='Write your note...'
+                    placeholder='Write something beautiful...'
                     value={content}
                     onChange={e => setContent(e.target.value)}
-                    rows='8'
-                    className='w-full bg-zinc-800 rounded-xl p-4 mb-6 outline-none resize-none'
+                    className='w-full bg-zinc-800 p-4 rounded-xl h-60 outline-none resize-none'
                 />
 
-                <div className='flex gap-4 justify-end'>
+                <div className='flex justify-end gap-4 mt-6'>
                     <button
                         onClick={onClose}
-                        className='bg-zinc-700 px-5 py-3 rounded-xl'
+                        className='px-5 py-3 rounded-xl bg-zinc-700'
                     >
                         Cancel
                     </button>
 
                     <button
                         onClick={handleSave}
-                        className='bg-gradient-to-r from-purple-500 to-blue-500 px-5 py-3 rounded-xl'
+                        className='px-5 py-3 rounded-xl bg-linear-to-r from-purple-500 to-blue-500'
                     >
-                        Save
+                        Save Note
                     </button>
                 </div>
             </div>

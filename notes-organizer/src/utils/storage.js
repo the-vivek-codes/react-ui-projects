@@ -4,12 +4,12 @@ export const getUsers = () => {
 export const saveUsers = (users) => {
   localStorage.setItem('users', JSON.stringify(users))
 }
+export const getCurrentUser = () => {
+  return JSON.parse(localStorage.getItem('currentUser'))
+}
 export const setCurrentUser = (user) => {
   localStorage.setItem('currentUser', JSON.stringify(user))
 }
-export const getNotes = () => {
-  return JSON.parse(localStorage.getItem('notes')) || []
-}
-export const saveNotes = (notes) => {
-  localStorage.setItem('notes', JSON.stringify(notes))
+export const logout = () => {
+  localStorage.removeItem('currentUser')
 }
