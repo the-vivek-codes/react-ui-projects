@@ -2,6 +2,14 @@
 
 A premium minimalist notes organizer built using React and Tailwind CSS.
 
+## Authentication Page
+
+![Auth Preview](./public/auth-preview.png)
+
+## Dashboard Preview
+
+![Dashboard Preview](./public/dashboard-preview.png)
+
 ## Features
 
 * User Authentication
