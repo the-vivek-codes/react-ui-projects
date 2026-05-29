@@ -4,7 +4,7 @@ A modern and responsive Job Finder UI built using ReactJS and Vite.
 
 ## Preview
 
-![Preview](./preview.png)
+![Preview](./public/preview.png)
 
 ## Features
 
@@ -37,10 +37,30 @@ src
 
 ## Installation
 
+Clone the repository:
+
+```bash
+git clone https://github.com/the-vivek-codes/react-ui-projects
+```
+
+Move into the project folder:
+
+```bash
+cd react-ui-projects/job-finder-ui
+```
+
+Install dependencies:
+
 ```bash
 npm install
+```
+
+Run the development server:
+
+```bash
 npm run dev
 ```
+
 
 ## Author
 
