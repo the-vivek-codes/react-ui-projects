@@ -2,7 +2,7 @@ export default function Sidebar({ onLogout, setFilter, filter }) {
     return (
         <div className='w-72 bg-white/5 border-r border-white/10 p-6 hidden md:flex flex-col justify-between'>
             <div>
-                <h1 className='text-3xl font-bold mb-10'>Notes.</h1>
+                <h1 className='text-3xl font-bold mb-10'>Notes</h1>
 
                 <div className='space-y-4'>
                     <button
