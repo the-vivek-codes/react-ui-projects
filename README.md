@@ -4,7 +4,6 @@ A collection of modern ReactJS projects built while learning frontend developmen
 
 ## Projects
 
-- Job Finder UI
 - Notes Organizer
 - More projects coming soon...
 
