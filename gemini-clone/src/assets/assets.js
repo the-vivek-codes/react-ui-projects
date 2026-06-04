@@ -7,8 +7,10 @@ import setting from './setting.png'
 import vIcon from './vIcon.png'
 import plusIcon from './plusIcon.png'
 import microphone from './microphone.png'
+import sendIcon from './sendIcon.png'
+import geminiblueIcon from './geminiblueIcon.png'
 
 const Images = {
-    gemini, newChat, library, search, history, setting, vIcon, plusIcon, microphone
+    gemini, newChat, library, search, history, setting, vIcon, plusIcon, microphone, sendIcon, geminiblueIcon
 }
 export default Images
