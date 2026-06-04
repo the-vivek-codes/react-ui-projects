@@ -23,6 +23,14 @@ const Dashboard = () => {
         setprompt("")
         if (textareaRef.current) {
             textareaRef.current.style.height = "auto"
+            textareaRef.current.focus()
+        }
+    }
+
+    const handleKeyDown = (e) => {
+        if (e.key === "Enter" && !e.shiftKey) {   
+            e.preventDefault()
+            sendMessage()
         }
     }
 
@@ -55,7 +63,7 @@ const Dashboard = () => {
             <div className="flex justify-center p-4">
                 <div className='flex items-center w-full max-w-3xl gap-4 px-4 py-3 rounded-3xl bg-white shadow-sm'>
                     <img src={Images.plusIcon} alt="" className='h-5 w-5' />
-                    <textarea ref={textareaRef} value={prompt} onChange={handleChange} placeholder='Ask Gemini' rows={1} className='flex-1 resize-none overflow-y-auto bg-transparent p-2 focus:outline-none max-h-40 leading-6' />
+                    <textarea ref={textareaRef} value={prompt} onChange={handleChange} onKeyDown={handleKeyDown} placeholder='Ask Gemini' rows={1} className='flex-1 resize-none overflow-y-auto bg-transparent p-2 focus:outline-none max-h-40 leading-6' />
                     <img src={Images.microphone} alt="" className='h-5 w-5' />
                     {prompt.trim().length > 0 && (<img src={Images.sendIcon} alt="send" onClick={sendMessage} className="h-5 w-5 cursor-pointer hover:scale-110 active:scale-95 transition-transform duration-200" />)}
                 </div>
