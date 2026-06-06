@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import Images from '../assets/assets.js'
 
-function MenuItem({ icon, label, expanded }) {
+function MenuItem({ icon, label, expanded, onClick }) {
     return (
         <div className="relative group w-full">
-            <div className={`flex items-center rounded-full hover:bg-gray-200 cursor-pointer transition-all duration-200 ${expanded ? 'w-full px-3 py-3 gap-4' : 'w-12 h-12 justify-center'}`} >
+            <div onClick={onClick} className={`flex items-center rounded-full hover:bg-gray-200 cursor-pointer transition-all duration-200 ${expanded ? 'w-full px-3 py-3 gap-4' : 'w-12 h-12 justify-center'}`} >
                 <img src={Images[icon]} alt={label} className="h-5 w-5" />
                 {expanded && (<span className="text-sm">{label}</span>)}
             </div>
@@ -19,7 +19,7 @@ function MenuItem({ icon, label, expanded }) {
     )
 }
 
-const Sidebar = () => {
+const Sidebar = ({ recentChats, onNewChat, loadChat }) => {
     const [expanded, setExpanded] = useState(false)
     return (
         <div className={` select-none h-screen ${expanded ? 'w-72' : 'w-20'} bg-white flex flex-col justify-between py-3 px-2 transition-all duration-300 `} >
@@ -35,19 +35,20 @@ const Sidebar = () => {
                         </div>
                     )}
                 </div>
-                <MenuItem icon='newChat' label='New Chat' expanded={expanded} />
+                <MenuItem icon='newChat' label='New Chat' expanded={expanded} onClick={onNewChat} />
                 <MenuItem icon='search' label='Search Chats' expanded={expanded} />
                 <MenuItem icon='library' label='Library' expanded={expanded} />
 
                 {expanded && (
                     <>
-                        <div className='mt-6 px-3 text-sm text-gray-500'> Notebooks </div>
-                        <div className='mt-6 px-3 flex gap-3'>
-                            <img src={Images.history} alt='history' className='h-5 w-5 mt-1' />
-                            <div>
-                                <p className='font-medium text-sm'> Gemini Apps activity is off </p>
-                                <p className='text-sm underline cursor-pointer'> Turn it on here </p>
-                            </div>
+                        <div className='mt-6 px-3 text-sm text-gray-600'>Recent Chats</div>
+                        <div className='w-full max-h-60 overflow-y-auto'>
+                            {recentChats.map((chat, index) => (
+                                <div key={index} onClick={() => loadChat(chat)} className='mx-2 px-3 py-1 rounded-lg hover:bg-gray-200 cursor-pointer text-sm truncate' >
+                                    <span className='mr-2 text-gray-500'>•</span>
+                                    {chat.title}
+                                </div>
+                            ))}
                         </div>
                     </>
                 )}

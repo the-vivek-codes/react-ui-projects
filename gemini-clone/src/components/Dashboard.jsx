@@ -1,7 +1,7 @@
 import Images from '../assets/assets.js'
 import { useState, useRef } from 'react'
 
-const Dashboard = () => {
+const Dashboard = ({messages, setMessages}) => {
     const [prompt, setprompt] = useState("")
     const textareaRef = useRef(null)
     const handleChange = (e) => {
@@ -12,14 +12,13 @@ const Dashboard = () => {
         }
     }
 
-    const [messages, setmessages] = useState([])
     const sendMessage = () => {
         if (!prompt.trim()) return
         const newMessage = {
             role: "user",
             text: prompt
         }
-        setmessages(prev => [...prev, newMessage])
+        setMessages(prev => [...prev, newMessage])
         setprompt("")
         if (textareaRef.current) {
             textareaRef.current.style.height = "auto"
