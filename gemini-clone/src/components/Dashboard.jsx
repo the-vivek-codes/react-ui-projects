@@ -1,5 +1,6 @@
 import Images from '../assets/assets.js'
 import { useState, useRef } from 'react'
+import { generateResponse } from '../api/gemini.js'
 
 const Dashboard = ({ messages, setMessages, activeChatIndex, recentChats, setRecentChats }) => {
     const [prompt, setprompt] = useState("")
@@ -12,7 +13,7 @@ const Dashboard = ({ messages, setMessages, activeChatIndex, recentChats, setRec
         }
     }
 
-    const sendMessage = () => {
+    const sendMessage = async () => {
         if (!prompt.trim()) return
         const newMessage = {
             role: "user",
@@ -20,13 +21,31 @@ const Dashboard = ({ messages, setMessages, activeChatIndex, recentChats, setRec
         }
         const updatedMessages = [...messages, newMessage]
         setMessages(updatedMessages)
-        if (activeChatIndex !== null) {
-            const updatedChats = [...recentChats]
-            updatedChats[activeChatIndex] = {
-                ...updatedChats[activeChatIndex],
-                messages: updatedMessages
+        try {
+            const reply = await generateResponse(prompt)
+            const botMessage = {
+                role: "assistant",
+                text: reply
             }
-            setRecentChats(updatedChats)
+            const finalMessages = [...updatedMessages, botMessage]
+            setMessages(finalMessages)
+
+            if (activeChatIndex !== null) {
+                const updatedChats = [...recentChats]
+                updatedChats[activeChatIndex] = {
+                    ...updatedChats[activeChatIndex],
+                    messages: finalMessages
+                }
+                setRecentChats(updatedChats)
+            }
+        }
+        catch (error) {
+            console.error(error)
+            const botMessage = {
+                role: "assistant",
+                text: "Something went wrong."
+            }
+            setMessages(prev => [...prev, botMessage])
         }
         setprompt("")
         if (textareaRef.current) {
@@ -60,8 +79,8 @@ const Dashboard = ({ messages, setMessages, activeChatIndex, recentChats, setRec
             {messages.length > 0 && (
                 <div className="flex-1 overflow-y-auto px-6 py-4">
                     {messages.map((msg, index) => (
-                        <div key={index} className="flex justify-end mb-4" >
-                            <div className="bg-blue-500 text-white px-4 py-2 rounded-2xl max-w-xl">
+                        <div key={index} className={`flex mb-4 ${msg.role === "user" ? "justify-end" : "justify-start"}`} >
+                            <div className={`px-4 py-2 rounded-2xl max-w-xl ${msg.role === "user" ? "bg-blue-500 text-white" : "bg-white text-black"}`} >
                                 {msg.text}
                             </div>
                         </div>
