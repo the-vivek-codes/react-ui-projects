@@ -7,10 +7,9 @@ const App = () => {
     const [recentChats, setRecentChats] = useState([])
     const [activeChatIndex, setActiveChatIndex] = useState(null)
     const handleNewChat = () => {
-        if (messages.length > 0) {
-            const chatTitle = messages[0].text
+        if ( activeChatIndex === null && messages.length > 0 ) {
             const chat = {
-                title: chatTitle,
+                title: messages[0].text,
                 messages: messages
             }
             setRecentChats(prev => [chat, ...prev])
@@ -18,14 +17,14 @@ const App = () => {
         setMessages([])
         setActiveChatIndex(null)
     }
-    const loadChat = (chat,index) => {
+    const loadChat = (chat, index) => {
         setMessages(chat.messages)
         setActiveChatIndex(index)
     }
 
     return <div className='flex'>
         <Sidebar recentChats={recentChats} onNewChat={handleNewChat} loadChat={loadChat} activeChatIndex={activeChatIndex} />
-        <Dashboard messages={messages} setMessages={setMessages} />
+        <Dashboard messages={messages} setMessages={setMessages} activeChatIndex={activeChatIndex} recentChats={recentChats} setRecentChats={setRecentChats} />
     </div>
 }
 export default App

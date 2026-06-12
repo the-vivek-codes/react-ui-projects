@@ -1,7 +1,7 @@
 import Images from '../assets/assets.js'
 import { useState, useRef } from 'react'
 
-const Dashboard = ({messages, setMessages}) => {
+const Dashboard = ({ messages, setMessages, activeChatIndex, recentChats, setRecentChats }) => {
     const [prompt, setprompt] = useState("")
     const textareaRef = useRef(null)
     const handleChange = (e) => {
@@ -18,7 +18,16 @@ const Dashboard = ({messages, setMessages}) => {
             role: "user",
             text: prompt
         }
-        setMessages(prev => [...prev, newMessage])
+        const updatedMessages = [...messages, newMessage]
+        setMessages(updatedMessages)
+        if (activeChatIndex !== null) {
+            const updatedChats = [...recentChats]
+            updatedChats[activeChatIndex] = {
+                ...updatedChats[activeChatIndex],
+                messages: updatedMessages
+            }
+            setRecentChats(updatedChats)
+        }
         setprompt("")
         if (textareaRef.current) {
             textareaRef.current.style.height = "auto"
@@ -27,7 +36,7 @@ const Dashboard = ({messages, setMessages}) => {
     }
 
     const handleKeyDown = (e) => {
-        if (e.key === "Enter" && !e.shiftKey) {   
+        if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault()
             sendMessage()
         }

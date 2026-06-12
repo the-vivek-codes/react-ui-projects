@@ -44,7 +44,7 @@ const Sidebar = ({ recentChats, onNewChat, loadChat, activeChatIndex }) => {
                         <div className='mt-6 px-3 text-sm text-gray-600'>Recent Chats</div>
                         <div className='w-full max-h-60 overflow-y-auto'>
                             {recentChats.map((chat, index) => (
-                                <div key={index} onClick={() => loadChat(chat,index)} className={`mx-2 px-3 py-1 rounded-lg cursor-pointer text-sm truncate ${ activeChatIndex === index ? 'bg-gray-200' : 'hover:bg-gray-200' }`}>
+                                <div key={index} onClick={() => loadChat(chat,index)} className={`mx-2 px-3 py-1 rounded-lg cursor-pointer text-sm truncate ${ activeChatIndex === index ? 'bg-gray-300' : 'hover:bg-gray-100' }`}>
                                     <span className='mr-2 text-gray-500'>•</span>
                                     {chat.title}
                                 </div>
