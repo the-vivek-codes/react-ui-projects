@@ -4,6 +4,7 @@ import { generateResponse } from '../api/gemini.js'
 
 const Dashboard = ({ messages, setMessages, activeChatIndex, recentChats, setRecentChats }) => {
     const [prompt, setprompt] = useState("")
+    const [loading, setLoading] = useState(false)
     const textareaRef = useRef(null)
     const handleChange = (e) => {
         setprompt(e.target.value)
@@ -14,21 +15,30 @@ const Dashboard = ({ messages, setMessages, activeChatIndex, recentChats, setRec
     }
 
     const sendMessage = async () => {
-        if (!prompt.trim()) return
+        if (!prompt.trim() || loading) return
         const newMessage = {
             role: "user",
             text: prompt
         }
         const updatedMessages = [...messages, newMessage]
         setMessages(updatedMessages)
+        const userPrompt = prompt
+        setprompt("")
+        setLoading(true)
+        if (textareaRef.current) {
+            textareaRef.current.style.height = "auto"
+            textareaRef.current.focus()
+        }
+
         try {
-            const reply = await generateResponse(prompt)
+            const reply = await generateResponse(userPrompt)
             const botMessage = {
                 role: "assistant",
                 text: reply
             }
             const finalMessages = [...updatedMessages, botMessage]
             setMessages(finalMessages)
+            setLoading(false)
 
             if (activeChatIndex !== null) {
                 const updatedChats = [...recentChats]
@@ -40,17 +50,13 @@ const Dashboard = ({ messages, setMessages, activeChatIndex, recentChats, setRec
             }
         }
         catch (error) {
+            setLoading(false)
             console.error(error)
             const botMessage = {
                 role: "assistant",
                 text: "Something went wrong."
             }
             setMessages(prev => [...prev, botMessage])
-        }
-        setprompt("")
-        if (textareaRef.current) {
-            textareaRef.current.style.height = "auto"
-            textareaRef.current.focus()
         }
     }
 
@@ -85,6 +91,13 @@ const Dashboard = ({ messages, setMessages, activeChatIndex, recentChats, setRec
                             </div>
                         </div>
                     ))}
+                    {loading && (
+                        <div className="flex justify-start mb-4">
+                            <div className="bg-white text-black px-4 py-2 rounded-2xl max-w-xl">
+                                Gemini is thinking...
+                            </div>
+                        </div>
+                    )}
                 </div>
             )}
             <div className="flex justify-center p-4">
