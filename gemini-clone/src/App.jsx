@@ -5,6 +5,7 @@ import Dashboard from './components/Dashboard.jsx'
 const App = () => {
     const [messages, setMessages] = useState([])
     const [recentChats, setRecentChats] = useState([])
+    const [activeChatIndex, setActiveChatIndex] = useState(null)
     const handleNewChat = () => {
         if (messages.length > 0) {
             const chatTitle = messages[0].text
@@ -15,13 +16,15 @@ const App = () => {
             setRecentChats(prev => [chat, ...prev])
         }
         setMessages([])
+        setActiveChatIndex(null)
     }
-    const loadChat = (chat) => {
+    const loadChat = (chat,index) => {
         setMessages(chat.messages)
+        setActiveChatIndex(index)
     }
 
     return <div className='flex'>
-        <Sidebar recentChats={recentChats} onNewChat={handleNewChat} loadChat={loadChat} />
+        <Sidebar recentChats={recentChats} onNewChat={handleNewChat} loadChat={loadChat} activeChatIndex={activeChatIndex} />
         <Dashboard messages={messages} setMessages={setMessages} />
     </div>
 }
