@@ -7,15 +7,21 @@ const App = () => {
         const savedMessages = localStorage.getItem("messages")
         return savedMessages ? JSON.parse(savedMessages) : []
     })
+    useEffect(() => { localStorage.setItem("messages", JSON.stringify(messages)) }, [messages])
+
     const [recentChats, setRecentChats] = useState(() => {
         const savedChats = localStorage.getItem("recentChats")
         return savedChats ? JSON.parse(savedChats) : []
     })
-    const [activeChatIndex, setActiveChatIndex] = useState(null)
-    useEffect(() => {
-        localStorage.setItem("recentChats", JSON.stringify(recentChats))
+    useEffect(() => { localStorage.setItem("recentChats", JSON.stringify(recentChats)) }, [recentChats])
+
+    const [activeChatIndex, setActiveChatIndex] = useState(() => {
+        const savedIndex = localStorage.getItem("activeChatIndex")
+        return savedIndex !== null ? JSON.parse(savedIndex) : null
     })
-    useEffect(() => { localStorage.setItem("messages", JSON.stringify(messages)) }, [messages])
+    useEffect(() => { localStorage.setItem( "activeChatIndex", JSON.stringify(activeChatIndex) ) }, [activeChatIndex])
+
+    
     const handleNewChat = () => {
         if (activeChatIndex === null && messages.length > 0) {
             const chat = {
