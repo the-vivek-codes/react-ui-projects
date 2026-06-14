@@ -5,6 +5,7 @@ A collection of modern ReactJS projects built while learning frontend developmen
 ## Projects
 
 - Notes Organizer
+- Gemini Clone (using Google Gemini API integration)
 - More projects coming soon...
 
 ## Tech Stack
