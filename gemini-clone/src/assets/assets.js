@@ -9,8 +9,9 @@ import plusIcon from './plusIcon.png'
 import microphone from './microphone.png'
 import sendIcon from './sendIcon.png'
 import geminiblueIcon from './geminiblueIcon.png'
+import deleteIcon from './deleteIcon.png'
 
 const Images = {
-    gemini, newChat, library, search, history, setting, vIcon, plusIcon, microphone, sendIcon, geminiblueIcon
+    gemini, newChat, library, search, history, setting, vIcon, plusIcon, microphone, sendIcon, geminiblueIcon, deleteIcon
 }
 export default Images

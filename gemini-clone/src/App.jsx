@@ -19,9 +19,9 @@ const App = () => {
         const savedIndex = localStorage.getItem("activeChatIndex")
         return savedIndex !== null ? JSON.parse(savedIndex) : null
     })
-    useEffect(() => { localStorage.setItem( "activeChatIndex", JSON.stringify(activeChatIndex) ) }, [activeChatIndex])
+    useEffect(() => { localStorage.setItem("activeChatIndex", JSON.stringify(activeChatIndex)) }, [activeChatIndex])
 
-    
+
     const handleNewChat = () => {
         if (activeChatIndex === null && messages.length > 0) {
             const chat = {
@@ -38,8 +38,17 @@ const App = () => {
         setActiveChatIndex(index)
     }
 
+    const deleteChat = (indexToDelete) => {
+        const updatedChats = recentChats.filter( (_, index) => index !== indexToDelete )
+        setRecentChats(updatedChats)
+        if (activeChatIndex === indexToDelete) {
+            setMessages([])
+            setActiveChatIndex(null)
+        }
+    }
+
     return <div className='flex'>
-        <Sidebar recentChats={recentChats} onNewChat={handleNewChat} loadChat={loadChat} activeChatIndex={activeChatIndex} />
+        <Sidebar recentChats={recentChats} onNewChat={handleNewChat} loadChat={loadChat} activeChatIndex={activeChatIndex} deleteChat={deleteChat} />
         <Dashboard messages={messages} setMessages={setMessages} activeChatIndex={activeChatIndex} recentChats={recentChats} setRecentChats={setRecentChats} />
     </div>
 }

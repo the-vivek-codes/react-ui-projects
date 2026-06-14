@@ -19,7 +19,7 @@ function MenuItem({ icon, label, expanded, onClick }) {
     )
 }
 
-const Sidebar = ({ recentChats, onNewChat, loadChat, activeChatIndex }) => {
+const Sidebar = ({ recentChats, onNewChat, loadChat, activeChatIndex, deleteChat }) => {
     const [expanded, setExpanded] = useState(false)
     return (
         <div className={` select-none h-screen ${expanded ? 'w-72' : 'w-20'} bg-white flex flex-col justify-between py-3 px-2 transition-all duration-300 `} >
@@ -44,9 +44,12 @@ const Sidebar = ({ recentChats, onNewChat, loadChat, activeChatIndex }) => {
                         <div className='mt-6 px-3 text-sm text-gray-600'>Recent Chats</div>
                         <div className='w-full max-h-60 overflow-y-auto'>
                             {recentChats.map((chat, index) => (
-                                <div key={index} onClick={() => loadChat(chat,index)} className={`mx-2 px-3 py-1 rounded-lg cursor-pointer text-sm truncate ${ activeChatIndex === index ? 'bg-gray-300' : 'hover:bg-gray-100' }`}>
-                                    <span className='mr-2 text-gray-500'>•</span>
-                                    {chat.title}
+                                <div key={index} className={`mx-2 px-3 py-1 rounded-lg cursor-pointer text-sm flex items-center justify-between ${activeChatIndex === index ? 'bg-gray-200' : 'hover:bg-gray-200' }`} >
+                                    <div onClick={() => loadChat(chat, index)} className="truncate flex-1" >
+                                        <span className='mr-2 text-gray-500'>•</span>
+                                        {chat.title}
+                                    </div>
+                                    <img src={Images.deleteIcon} alt="delete" onClick={(e) => { e.stopPropagation(); deleteChat(index) }} className="h-4 w-4 opacity-60 hover:opacity-100" />
                                 </div>
                             ))}
                         </div>
