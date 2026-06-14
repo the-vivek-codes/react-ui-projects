@@ -1,7 +1,22 @@
 # Gemini Clone
 
 A modern AI chat application inspired by Google Gemini built using React, Tailwind CSS, and Google Gemini API integration.
+
 This project replicates the core chat experience of Google Gemini, allowing users to interact with an AI assistant through a clean and responsive interface. The application supports conversation management, chat history, and AI-generated formatted responses powered by Google's Gemini model.
+
+## Previews
+<p><em>Click any image to view full size.</em></p>
+<p>
+  <a href="./public/preview1.png">
+    <img src="./public/preview1.png" width="30%" />
+  </a>
+  <a href="./public/preview2.png">
+    <img src="./public/preview2.png" width="30%" />
+  </a>
+  <a href="./public/preview3.png">
+    <img src="./public/preview3.png" width="30%" />
+  </a>
+</p>
 
 ## Features
 
@@ -33,7 +48,10 @@ This project replicates the core chat experience of Google Gemini, allowing user
 
 ```bash
 git clone https://github.com/the-vivek-codes/react-ui-projects
-cd gemini-clone
+```
+### Navigate to the Gemini Clone project
+```bash
+cd react-ui-projects/gemini-clone
 ```
 
 ### Install dependencies
