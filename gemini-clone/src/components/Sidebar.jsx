@@ -44,12 +44,12 @@ const Sidebar = ({ recentChats, onNewChat, loadChat, activeChatIndex, deleteChat
                         <div className='mt-6 px-3 text-sm text-gray-600'>Recent Chats</div>
                         <div className='w-full max-h-60 overflow-y-auto'>
                             {recentChats.map((chat, index) => (
-                                <div key={index} className={`mx-2 px-3 py-1 rounded-lg cursor-pointer text-sm flex items-center justify-between ${activeChatIndex === index ? 'bg-gray-200' : 'hover:bg-gray-200' }`} >
+                                <div key={index} className={`group mx-2 px-3 py-1 rounded-lg cursor-pointer text-sm flex items-center justify-between ${ activeChatIndex === index ? 'bg-gray-200' : 'hover:bg-gray-200' }`} >
                                     <div onClick={() => loadChat(chat, index)} className="truncate flex-1" >
                                         <span className='mr-2 text-gray-500'>•</span>
                                         {chat.title}
                                     </div>
-                                    <img src={Images.deleteIcon} alt="delete" onClick={(e) => { e.stopPropagation(); deleteChat(index) }} className="h-4 w-4 opacity-60 hover:opacity-100" />
+                                    <img src={Images.deleteIcon} alt="delete" onClick={(e) => { e.stopPropagation(); deleteChat(index) }} className=" h-4 w-4 opacity-0 group-hover:opacity-100 hover:scale-110 transition-all duration-200 " />
                                 </div>
                             ))}
                         </div>
