@@ -1,13 +1,23 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Sidebar from './components/Sidebar.jsx'
 import Dashboard from './components/Dashboard.jsx'
 
 const App = () => {
-    const [messages, setMessages] = useState([])
-    const [recentChats, setRecentChats] = useState([])
+    const [messages, setMessages] = useState(() => {
+        const savedMessages = localStorage.getItem("messages")
+        return savedMessages ? JSON.parse(savedMessages) : []
+    })
+    const [recentChats, setRecentChats] = useState(() => {
+        const savedChats = localStorage.getItem("recentChats")
+        return savedChats ? JSON.parse(savedChats) : []
+    })
     const [activeChatIndex, setActiveChatIndex] = useState(null)
+    useEffect(() => {
+        localStorage.setItem("recentChats", JSON.stringify(recentChats))
+    })
+    useEffect(() => { localStorage.setItem("messages", JSON.stringify(messages)) }, [messages])
     const handleNewChat = () => {
-        if ( activeChatIndex === null && messages.length > 0 ) {
+        if (activeChatIndex === null && messages.length > 0) {
             const chat = {
                 title: messages[0].text,
                 messages: messages
