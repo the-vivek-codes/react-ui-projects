@@ -1,4 +1,5 @@
-import {motion} from 'framer-motion'
+import { PenLine, Archive, ArchiveRestore, Star, StarOff, Trash2 } from 'lucide-react'
+import { motion } from 'framer-motion'
 
 export default function NoteCard({ note, onDelete, onEdit, onFavorite, onArchive }) {
     return (
@@ -10,31 +11,54 @@ export default function NoteCard({ note, onDelete, onEdit, onFavorite, onArchive
             <p className='text-zinc-400 line-clamp-4'>
                 {note.content}
             </p>
+            <hr className="border-gray-700 my-6" />
 
             <div className='flex flex-wrap gap-3 mt-6'>
                 <button
                     onClick={onEdit}
-                    className='bg-purple-500/20 text-purple-300 px-4 py-2 rounded-lg hover:bg-purple-500/30 transition'
+                    className='flex items-center gap-4 bg-zinc-800 text-zinc-200 px-4 py-2 rounded-lg hover:bg-zinc-700 transition'
                 >
-                    Edit
+                    <PenLine size={16} />
+                    <span>Edit</span>
                 </button>
                 <button
                     onClick={onFavorite}
-                    className='bg-yellow-500/20 text-yellow-300 px-4 py-2 rounded-lg hover:bg-yellow-500/30 transition'
+                    className='flex items-center gap-4 bg-zinc-800 text-zinc-200 px-4 py-2 rounded-lg hover:bg-zinc-700 transition'
                 >
-                    {note.favorite ? 'Unfavorite' : 'Favorite'}
+                    {note.favorite ? (
+                        <>
+                            <StarOff size={16} />
+                            <span>Unfavorite</span>
+                        </>
+                    ) : (
+                        <>
+                            <Star size={16} />
+                            <span>Favorite</span>
+                        </>
+                    )}
                 </button>
                 <button
                     onClick={onArchive}
-                    className='bg-blue-500/20 text-blue-300 px-4 py-2 rounded-lg hover:bg-blue-500/30 transition'
+                    className='flex items-center gap-4 bg-zinc-800 text-zinc-200 px-4 py-2 rounded-lg hover:bg-zinc-700 transition'
                 >
-                    {note.archived ? 'Unarchive' : 'Archive'}
+                    {note.archived ? (
+                        <>
+                            <ArchiveRestore size={16} />
+                            <span>Unarchive</span>
+                        </>
+                    ) : (
+                        <>
+                            <Archive size={16} />
+                            <span>Archive</span>
+                        </>
+                    )}
                 </button>
                 <button
                     onClick={onDelete}
-                    className='bg-red-500/20 text-red-300 px-4 py-2 rounded-lg hover:bg-red-500/30 transition'
+                    className='flex items-center gap-4 bg-zinc-800 text-zinc-200 px-4 py-2 rounded-lg hover:bg-zinc-700 transition'
                 >
-                    Delete
+                    <Trash2 size={16} />
+                    <span>Delete</span>
                 </button>
             </div>
         </motion.div>

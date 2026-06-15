@@ -51,7 +51,7 @@ export default function NoteModal({ note, onSave, onClose }) {
 
                     <button
                         onClick={handleSave}
-                        className='px-5 py-3 rounded-xl bg-linear-to-r from-purple-500 to-blue-500'
+                        className='px-5 py-3 rounded-xl bg-blue-500'
                     >
                         Save Note
                     </button>

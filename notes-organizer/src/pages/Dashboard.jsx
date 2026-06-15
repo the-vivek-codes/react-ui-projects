@@ -1,3 +1,4 @@
+import { Search, Plus } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
@@ -77,7 +78,7 @@ export default function Dashboard() {
     })
 
     return (
-        <div className='min-h-screen bg-black text-white flex'>
+        <div className='min-h-screen bg-[#0F1115] text-white flex'>
             <Sidebar onLogout={handleLogout} setFilter={setFilter} filter={filter} />
 
             <div className='flex-1 p-6 lg:p-10'>
@@ -90,18 +91,22 @@ export default function Dashboard() {
                     </div>
 
                     <div className='flex gap-4'>
-                        <input
-                            type='text'
-                            placeholder='Search notes...'
-                            value={search}
-                            onChange={e => setSearch(e.target.value)}
-                            className='bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3 outline-none'
-                        />
+                        <div className="relative">
+                            <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" />
+                            <input
+                                type="text"
+                                placeholder="Search notes..."
+                                value={search}
+                                onChange={e => setSearch(e.target.value)}
+                                className="bg-zinc-900 border border-zinc-700 rounded-xl pl-11 pr-4 py-3 outline-none focus:border-blue-500"
+                            />
+                        </div>
                         <button
                             onClick={() => setModalOpen(true)}
-                            className='bg-linear-to-r from-purple-500 to-blue-500 px-6 rounded-xl font-semibold hover:scale-[1.02] transition'
+                            className='bg-blue-600 hover:bg-blue-700 px-5 py-3 rounded-xl font-semibold transition-colors flex items-center gap-3'
                         >
-                            + Add Note
+                            <Plus size={20} />
+                            <span>Add Note</span>
                         </button>
                     </div>
                 </div>
