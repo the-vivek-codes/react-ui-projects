@@ -81,8 +81,3 @@ src/
 ├── main.jsx
 └── index.css
 ```
-
-
-## Author
-
-Vivek Kumar Dwivedi
