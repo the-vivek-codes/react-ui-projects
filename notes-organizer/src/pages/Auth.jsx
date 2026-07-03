@@ -1,21 +1,26 @@
-import {useState} from 'react'
-import {useNavigate} from 'react-router-dom'
-import {motion} from 'framer-motion'
-import {getUsers, saveUsers, setCurrentUser} from '../utils/storage'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { motion } from 'framer-motion'
+import { getUsers, saveUsers, setCurrentUser } from '../utils/storage'
 
 export default function Auth() {
     const navigate = useNavigate()
     const [isLogin, setIsLogin] = useState(true)
+    const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
     const handleSubmit = () => {
+        if (!email.trim() || !password.trim() || (!isLogin && !name.trim())) {
+            alert("Please fill all fields!")
+            return
+        }
         const users = getUsers()
 
         if (isLogin) {
             const user = users.find(u => u.email === email && u.password === password)
             if (!user) {
-                alert('Invalid credentials')
+                alert('Invalid credentials!')
                 return
             }
             setCurrentUser(user)
@@ -24,10 +29,11 @@ export default function Auth() {
         else {
             const exists = users.find(u => u.email === email)
             if (exists) {
-                alert('User already exists')
+                alert('User already exists!')
                 return
             }
             const newUser = {
+                name,
                 email,
                 password,
             }
@@ -35,6 +41,13 @@ export default function Auth() {
             setCurrentUser(newUser)
             navigate('/dashboard')
         }
+    }
+
+    const toggleMode = () => {
+        setIsLogin(prev => !prev)
+        setName("")
+        setEmail("")
+        setPassword("")
     }
     return (
         <div className='min-h-screen bg-linear-to-br from-zinc-500 via-zinc-200 to-zinc-50 flex items-center justify-center px-6'>
@@ -58,11 +71,20 @@ export default function Auth() {
                     <h2 className='text-4xl font-bold mb-2 text-gray-900'>
                         {isLogin ? 'Welcome Back' : 'Create Account'}
                     </h2>
-                     <p className='text-gray-500 mb-10'>
+                    <p className='text-gray-500 mb-10'>
                         {isLogin
                             ? 'Sign in to continue'
                             : 'Register to start organizing'}
                     </p>
+                    {!isLogin && (
+                        <input
+                            type="text"
+                            placeholder="Enter Your Name"
+                            value={name}
+                            onChange={e => setName(e.target.value)}
+                            className="bg-gray-100 border border-gray-300 rounded-xl p-4 mb-4 text-gray-900 placeholder-gray-500 outline-none transition focus:border-black"
+                        />
+                    )}
                     <input
                         type='email'
                         placeholder='Email'
@@ -85,7 +107,7 @@ export default function Auth() {
                     </button>
                     <p className='text-gray-600 mt-6'>
                         {isLogin ? 'New here?' : 'Already have an account?'}
-                        <button onClick={() => setIsLogin(!isLogin)} className='ml-2 text-gray-600 font-semibold cursor-pointer hover:text-black active:scale-95 transition duration-150 inline-block'>
+                        <button onClick={toggleMode} className='ml-2 text-gray-600 font-semibold cursor-pointer hover:text-black active:scale-95 transition duration-150 inline-block'>
                             {isLogin ? 'REGISTER' : 'SIGN IN'}
                         </button>
                     </p>

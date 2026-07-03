@@ -86,7 +86,7 @@ export default function Dashboard() {
                     <div>
                         <h1 className='text-4xl font-bold'>Your Notes</h1>
                         <p className='text-zinc-400 mt-2'>
-                            Welcome, {currentUser.email}
+                            Welcome, {currentUser.name}
                         </p>
                     </div>
 
