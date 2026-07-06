@@ -9,14 +9,13 @@ import { logout, getCurrentUser } from '../utils/storage'
 export default function Dashboard() {
     const navigate = useNavigate()
     const currentUser = getCurrentUser()
+    const storageKey = `notes_${currentUser.email}`
 
     const [notes, setNotes] = useState([])
     const [search, setSearch] = useState('')
     const [filter, setFilter] = useState('all')
     const [modalOpen, setModalOpen] = useState(false)
     const [selectedNote, setSelectedNote] = useState(null)
-
-    const storageKey = `notes_${currentUser.email}`
 
     useEffect(() => {
         const saved = JSON.parse(localStorage.getItem(storageKey)) || []
@@ -30,42 +29,31 @@ export default function Dashboard() {
         logout()
         navigate('/')
     }
-    const handleSaveNote = (note) => {
-        const newNote = {
-            favorite: false,
-            archived: false,
-            ...note,
-        }
-        const exists = notes.find(n => n.id === note.id)
 
-        if (exists) {
-            setNotes(notes.map(n => n.id === note.id ? note : n))
-        } else {
-            setNotes([note, ...notes])
-        }
+    const handleSaveNote = (note) => {
+        setNotes(prevNotes => {
+            const exists = prevNotes.some(n => n.id === note.id)
+            if (exists) {
+                return prevNotes.map(n => n.id === note.id ? { ...n, ...note } : n)
+            }
+            return [{ favorite: false, archived: false, ...note }, ...prevNotes]
+        })
         setModalOpen(false)
         setSelectedNote(null)
     }
 
     const handleDelete = (id) => {
-        setNotes(notes.filter(note => note.id !== id))
+        setNotes(prevNotes => prevNotes.filter(note => note.id !== id) )
     }
+
     const toggleFavorite = (id) => {
         setNotes(prevNotes =>
-            prevNotes.map(note =>
-                note.id === id
-                    ? { ...note, favorite: !note.favorite }
-                    : note
-            )
+            prevNotes.map(note => note.id === id ? { ...note, favorite: !note.favorite } : note )
         )
     }
     const toggleArchive = (id) => {
         setNotes(prevNotes =>
-            prevNotes.map(note =>
-                note.id === id
-                    ? { ...note, archived: !note.archived }
-                    : note
-            )
+            prevNotes.map(note => note.id === id ? { ...note, archived: !note.archived } : note )
         )
     }
     const filteredNotes = notes.filter(note => {
@@ -85,9 +73,7 @@ export default function Dashboard() {
                 <div className='flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-10'>
                     <div>
                         <h1 className='text-4xl font-bold'>Your Notes</h1>
-                        <p className='text-zinc-400 mt-2'>
-                            Welcome, {currentUser.name}
-                        </p>
+                        <p className='text-zinc-400 mt-2'> Welcome, {currentUser.name} </p>
                     </div>
 
                     <div className='flex gap-4'>
