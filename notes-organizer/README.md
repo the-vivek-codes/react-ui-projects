@@ -14,13 +14,11 @@ A premium minimalist notes organizer built using React and Tailwind CSS.
 
 * User Authentication
 * Protected Dashboard
-* Create Notes
-* Edit Notes
-* Delete Notes
-* Favorite Notes
-* Archive Notes
+* Create, Edit and Delete Notes
+* Favorite and Archive Notes
 * Search Functionality
 * Local Storage Persistence
+* Last Edited Timestamp
 * Responsive Modern UI
 * Smooth Animations
 
@@ -57,27 +55,4 @@ Run the development server:
 
 ```bash
 npm run dev
-```
-
-## Project Structure
-
-```txt
-src/
-│
-├── components/
-│   ├── NoteCard.jsx
-│   ├── NoteModal.jsx
-│   ├── ProtectedRoute.jsx
-│   └── Sidebar.jsx
-│
-├── pages/
-│   ├── Auth.jsx
-│   └── Dashboard.jsx
-│
-├── utils/
-│   └── storage.js
-│
-├── App.jsx
-├── main.jsx
-└── index.css
 ```
