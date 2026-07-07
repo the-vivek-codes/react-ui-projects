@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
 import NoteCard from '../components/NoteCard'
 import NoteModal from '../components/NoteModal'
+import DeleteConfirmModal from '../components/DeleteConfirmModal'
 import { logout, getCurrentUser } from '../utils/storage'
 
 export default function Dashboard() {
@@ -16,6 +17,8 @@ export default function Dashboard() {
     const [filter, setFilter] = useState('all')
     const [modalOpen, setModalOpen] = useState(false)
     const [selectedNote, setSelectedNote] = useState(null)
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false)
+    const [noteToDelete, setNoteToDelete] = useState(null)
 
     useEffect(() => {
         const saved = JSON.parse(localStorage.getItem(storageKey)) || []
@@ -34,34 +37,44 @@ export default function Dashboard() {
         setNotes(prevNotes => {
             const exists = prevNotes.some(n => n.id === note.id)
             if (exists) {
-                return prevNotes.map(n => n.id === note.id ? { ...n, ...note } : n)
+                return prevNotes.map(n => {
+                    if (n.id !== note.id) return n
+                    if (n.title === note.title && n.content === note.content) return n
+                    return { ...n, ...note, updatedAt: new Date().toISOString() }
+                })
             }
-            return [{ favorite: false, archived: false, ...note }, ...prevNotes]
+            const now = new Date().toISOString()
+            return [{ favorite: false, archived: false, createdAt: now, updatedAt: now, ...note, }, ...prevNotes,]
         })
         setModalOpen(false)
         setSelectedNote(null)
     }
 
-    const handleDelete = (id) => {
-        setNotes(prevNotes => prevNotes.filter(note => note.id !== id) )
+    const handleDelete = () => {
+        setNotes(prevNotes => prevNotes.filter(note => note.id !== noteToDelete))
+        setDeleteModalOpen(false)
+        setNoteToDelete(null)
     }
 
     const toggleFavorite = (id) => {
         setNotes(prevNotes =>
-            prevNotes.map(note => note.id === id ? { ...note, favorite: !note.favorite } : note )
+            prevNotes.map(note => note.id === id ? { ...note, favorite: !note.favorite } : note)
         )
     }
     const toggleArchive = (id) => {
         setNotes(prevNotes =>
-            prevNotes.map(note => note.id === id ? { ...note, archived: !note.archived } : note )
+            prevNotes.map(note => note.id === id ? { ...note, archived: !note.archived } : note)
         )
     }
+    const query = search.trim().toLowerCase()
     const filteredNotes = notes.filter(note => {
-        const matchesSearch = note.title.toLowerCase().includes(search.toLowerCase())
+        const matchesSearch = note.title.toLowerCase().includes(query) || note.content.toLowerCase().includes(query)
         if (filter === 'favorites') {
             return (matchesSearch && note.favorite && !note.archived)
         }
-        if (filter === 'archived') { return matchesSearch && note.archived }
+        if (filter === 'archived') {
+            return matchesSearch && note.archived
+        }
         return matchesSearch && !note.archived
     })
 
@@ -97,8 +110,8 @@ export default function Dashboard() {
                     </div>
                 </div>
                 {filteredNotes.length === 0 ? (
-                    <div className='h-[60vh] flex items-center justify-center text-zinc-500 text-xl'>
-                        {filter === 'favorites' ? 'No favorite notes.' : filter === 'archived' ? 'No archived notes.' : 'No notes found.'}
+                    <div className='h-[60vh] flex items-center justify-center text-zinc-500 text-2xl'>
+                        {filter === 'favorites' ? 'No Favorite Notes' : filter === 'archived' ? 'No Archived Notes' : 'No Notes Found'}
                     </div>
                 ) : (
                     <div className='grid sm:grid-cols-2 xl:grid-cols-3 gap-6'>
@@ -106,10 +119,13 @@ export default function Dashboard() {
                             <NoteCard
                                 key={note.id}
                                 note={note}
-                                onDelete={() => handleDelete(note.id)}
-                                onEdit={() => {
+                                onClick={() => {
                                     setSelectedNote(note)
                                     setModalOpen(true)
+                                }}
+                                onDelete={() => {
+                                    setNoteToDelete(note.id)
+                                    setDeleteModalOpen(true)
                                 }}
                                 onFavorite={() => toggleFavorite(note.id)}
                                 onArchive={() => toggleArchive(note.id)}
@@ -126,6 +142,15 @@ export default function Dashboard() {
                         setModalOpen(false)
                         setSelectedNote(null)
                     }}
+                />
+            )}
+            {deleteModalOpen && (
+                <DeleteConfirmModal
+                    onCancel={() => {
+                        setDeleteModalOpen(false)
+                        setNoteToDelete(null)
+                    }}
+                    onConfirm={handleDelete}
                 />
             )}
         </div>

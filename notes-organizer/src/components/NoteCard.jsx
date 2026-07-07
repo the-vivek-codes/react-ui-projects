@@ -1,28 +1,33 @@
-import { PenLine, Archive, ArchiveRestore, Star, StarOff, Trash2 } from 'lucide-react'
+import { Archive, ArchiveRestore, Star, StarOff, Trash2 } from 'lucide-react'
 import { motion } from 'framer-motion'
 
-export default function NoteCard({ note, onDelete, onEdit, onFavorite, onArchive }) {
+export default function NoteCard({ note, onClick, onDelete, onFavorite, onArchive }) {
+    const lastEdited = new Date(note.updatedAt).toLocaleString("en-IN", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+    })
     return (
         <motion.div
             whileHover={{ scale: 1.03 }}
-            className='bg-white/5 border border-white/10 rounded-2xl p-5 backdrop-blur-lg'
+            onClick={onClick}
+            className='bg-white/5 border border-white/10 rounded-2xl p-5 backdrop-blur-lg cursor-pointer'
         >
-            <h2 className='text-xl font-semibold mb-3'>{note.title}</h2>
-            <p className='text-zinc-400 line-clamp-4'>
+            <h2 className='text-xl font-semibold mb-3 line-clamp-1'>{note.title}</h2>
+            <p className='text-zinc-400 line-clamp-2'>
                 {note.content}
             </p>
+            <p className="text-xs text-zinc-500 mt-4"> Last edited {lastEdited} </p>
             <hr className="border-gray-700 my-6" />
 
             <div className='flex flex-wrap gap-3 mt-6'>
                 <button
-                    onClick={onEdit}
-                    className='flex items-center gap-4 bg-zinc-800 text-zinc-200 px-4 py-2 rounded-lg hover:bg-zinc-700 transition'
-                >
-                    <PenLine size={16} />
-                    <span>Edit</span>
-                </button>
-                <button
-                    onClick={onFavorite}
+                    onClick={(e) => {
+                        e.stopPropagation()
+                        onFavorite()
+                    }}
                     className='flex items-center gap-4 bg-zinc-800 text-zinc-200 px-4 py-2 rounded-lg hover:bg-zinc-700 transition'
                 >
                     {note.favorite ? (
@@ -38,7 +43,10 @@ export default function NoteCard({ note, onDelete, onEdit, onFavorite, onArchive
                     )}
                 </button>
                 <button
-                    onClick={onArchive}
+                    onClick={(e) => {
+                        e.stopPropagation()
+                        onArchive()
+                    }}
                     className='flex items-center gap-4 bg-zinc-800 text-zinc-200 px-4 py-2 rounded-lg hover:bg-zinc-700 transition'
                 >
                     {note.archived ? (
@@ -54,7 +62,10 @@ export default function NoteCard({ note, onDelete, onEdit, onFavorite, onArchive
                     )}
                 </button>
                 <button
-                    onClick={onDelete}
+                    onClick={(e) => {
+                        e.stopPropagation()
+                        onDelete()
+                    }}
                     className='flex items-center gap-4 bg-zinc-800 text-zinc-200 px-4 py-2 rounded-lg hover:bg-zinc-700 transition'
                 >
                     <Trash2 size={16} />

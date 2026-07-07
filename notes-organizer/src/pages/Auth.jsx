@@ -10,7 +10,8 @@ export default function Auth() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    const handleSubmit = () => {
+    const handleSubmit = (e) => {
+        e.preventDefault()
         if (!email.trim() || !password.trim() || (!isLogin && !name.trim())) {
             alert("Please fill all fields!")
             return
@@ -63,9 +64,10 @@ export default function Auth() {
                     </p>
                 </div>
 
-                <motion.div
+                <motion.form
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
+                    onSubmit={handleSubmit}
                     className='p-10 lg:p-16 flex flex-col justify-center'
                 >
                     <h2 className='text-4xl font-bold mb-2 text-gray-900'>
@@ -76,6 +78,7 @@ export default function Auth() {
                             ? 'Sign in to continue'
                             : 'Register to start organizing'}
                     </p>
+                    
                     {!isLogin && (
                         <input
                             type="text"
@@ -99,19 +102,25 @@ export default function Auth() {
                         onChange={e => setPassword(e.target.value)}
                         className="bg-gray-100 border border-gray-300 rounded-xl p-4 mb-4 text-gray-900 placeholder-gray-500 outline-none transition focus:border-black"
                     />
+
                     <button
-                        onClick={handleSubmit}
+                        type='submit'
                         className="bg-black hover:bg-gray-800 text-white rounded-xl p-4 font-semibold cursor-pointer active:scale-95 transition duration-150"
                     >
                         {isLogin ? 'Sign In' : 'Register'}
                     </button>
+
                     <p className='text-gray-600 mt-6'>
                         {isLogin ? 'New here?' : 'Already have an account?'}
-                        <button onClick={toggleMode} className='ml-2 text-gray-600 font-semibold cursor-pointer hover:text-black active:scale-95 transition duration-150 inline-block'>
+                        <button
+                            type="button"
+                            onClick={toggleMode}
+                            className="ml-2 text-gray-600 font-semibold cursor-pointer hover:text-black active:scale-95 transition duration-150 inline-block"
+                        >
                             {isLogin ? 'REGISTER' : 'SIGN IN'}
                         </button>
                     </p>
-                </motion.div>
+                </motion.form>
             </div>
         </div>
     )

@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react'
+import { useState, useEffect } from 'react'
 
 export default function NoteModal({ note, onSave, onClose }) {
     const [title, setTitle] = useState('')
@@ -8,14 +8,21 @@ export default function NoteModal({ note, onSave, onClose }) {
         if (note) {
             setTitle(note.title)
             setContent(note.content)
+        } else {
+            setTitle('')
+            setContent('')
         }
     }, [note])
 
     const handleSave = () => {
+        if (!title.trim() && !content.trim()) {
+            alert("Please enter a title or some content before saving!")
+            return
+        }
         onSave({
             id: note?.id || Date.now(),
-            title,
-            content,
+            title: title.trim(),
+            content: content.trim()
         })
     }
 
